@@ -2,7 +2,10 @@ package me.boomboompower.throwingtnt;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
-@SuppressWarnings({"unused"})
+/**
+ * Created by boomboompower on 19-Apr-16.
+ */
+
 public class ThrowingTNT extends JavaPlugin {
 
     @Override

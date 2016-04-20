@@ -11,39 +11,39 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+
+import java.util.ArrayList;
 
 /**
  * Created by boomboompower on 19-Apr-16.
  */
 
-@SuppressWarnings({"unused"})
 public class ThrowingTNTListener implements Listener {
 
+    private FileConfiguration config;
     private ThrowingTNT throwingTNT;
-    private String uniqueID;
+    private ArrayList uuid;
 
     public ThrowingTNTListener(ThrowingTNT throwingTNT) {
         this.throwingTNT = throwingTNT;
+        this.config = throwingTNT.getConfig();
+        this.uuid = new ArrayList();
+
         Bukkit.getPluginManager().registerEvents(this, throwingTNT);
     }
 
     @EventHandler(ignoreCancelled = true)
     private void onPlayerInteract(PlayerInteractEvent e) {
-        // If the hand is not their main hand,
-        // don't run any of the code below.
-        if (!(e.getHand() == EquipmentSlot.HAND)) return;
-
         // Gets the player, their inventory
         // and also their location
         Player p = e.getPlayer();
         PlayerInventory inv = p.getInventory();
         Location loc = p.getLocation();
 
-        // If the item in their main hand is tnt
-        if (p.getInventory().getItemInMainHand().getType().equals(Material.TNT)) {
+        // If the item is tnt and also not null
+        if (e.getItem() != null && e.getItem().getType() == Material.TNT) {
             // Removes 1 tnt from player
             inv.remove(new ItemStack(Material.TNT, 1));
 
@@ -53,14 +53,18 @@ public class ThrowingTNTListener implements Listener {
             // Makes the tnt fly through the air!
             tnt.setVelocity(loc.getDirection().normalize().multiply(2));
 
-            // Stores the tnt's uuid (used for later)
-            this.uniqueID = tnt.getUniqueId().toString();
+            // Stores the entities uuid in the array
+            // This is used later to stop blocks being
+            // Broken if
+            if (config.getBoolean("StopBlockBreaking")) {
+                this.uuid.add(tnt.getUniqueId().toString());
+            }
 
-            if (throwingTNT.getConfig().getBoolean("CountThrows")) {
-                FileConfiguration con = throwingTNT.getConfig();
-                Integer thrown = throwingTNT.getConfig().getInt("Throws");
+            // If the user
+            if (config.getBoolean("CountThrows")) {
+                Integer thrown = config.getInt("Throws");
 
-                con.set("Throws", thrown + 1);
+                config.set("Throws", thrown + 1);
             }
         }
     }
@@ -72,17 +76,27 @@ public class ThrowingTNTListener implements Listener {
 
         // Checks if the entities uuid is the
         // same as the tnt we spawned earlier
-        if (uuid.equals(this.uniqueID)) {
+        if (this.uuid.contains(uuid) && config.getBoolean("StopBlockBreaking")) {
             // Stop the explosion breaking blocks
             e.blockList().clear();
+
+            // Remove the UUID from
+            // the ArrayList.
+            this.uuid.remove(uuid);
         }
     }
 
     @EventHandler(ignoreCancelled = true)
     private void onBlockPlace(BlockPlaceEvent e) {
+        // Make one variable holding the block
+        // type and one with the player.
+        Material type = e.getBlock().getType();
+        Player p = e.getPlayer();
+
         // If the block being placed is
-        // tnt stop it being placed
-        if (e.getBlockPlaced().getType().equals(Material.TNT)) {
+        // tnt and player isn't sneaking,
+        // stop the block being placed.
+        if (type == Material.TNT && config.getBoolean("StopTNTPlacing")) {
             e.setCancelled(true);
         }
     }

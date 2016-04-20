@@ -1,2 +1,7 @@
+# Welcome to the ThrowingTNT config! Use the link
+# http://github.com/boomboompower/ThrowingTNT
+# For the plugin source code!
+StopTNTPlacing: true
+StopBlockBreaking: true
 CountThrows: true
 Throws: 0

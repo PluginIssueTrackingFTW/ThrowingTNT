@@ -11,12 +11,5 @@ public class ThrowingTNT extends JavaPlugin {
     @Override
     public void onEnable() {
         new ThrowingTNTListener(this);
-
-        saveDefaultConfig();
-    }
-
-    @Override
-    public void onDisable() {
-        saveConfig();
     }
 }

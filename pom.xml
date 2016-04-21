@@ -6,7 +6,7 @@
 
     <groupId>me.boomboompower</groupId>
     <artifactId>ThrowingTNT</artifactId>
-    <version>1.7-SNAPSHOT</version>
+    <version>1.9-SNAPSHOT</version>
 
     <!-- Properties -->
     <properties>
@@ -21,7 +21,7 @@
 
     <!-- Build instructions -->
     <build>
-        <finalName>${project.name}</finalName>
+        <finalName>${project.name}-${version}</finalName>
         <defaultGoal>package</defaultGoal>
         <testSourceDirectory>${testDir}</testSourceDirectory>
         <sourceDirectory>${srcDir}</sourceDirectory>

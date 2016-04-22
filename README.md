@@ -1,2 +1,3 @@
 # ThrowingTNT [![Build Status](https://travis-ci.org/boomboompower/ThrowingTNT.svg?branch=master)](https://travis-ci.org/boomboompower/ThrowingTNT)
-Throw sum tnt! - Although Travis says its failing, I can confirm it works
+#### Allows you to throw TNT around your server, still in development stages!
+_Throw sum tnt!_

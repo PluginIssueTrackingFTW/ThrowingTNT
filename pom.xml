@@ -21,7 +21,7 @@
 
     <!-- Build instructions -->
     <build>
-        <finalName>${project.name}-${version}</finalName>
+        <finalName>${project.name}-${project.version}</finalName>
         <defaultGoal>package</defaultGoal>
         <testSourceDirectory>${testDir}</testSourceDirectory>
         <sourceDirectory>${srcDir}</sourceDirectory>
